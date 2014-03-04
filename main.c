@@ -292,6 +292,24 @@ static void add_customer(void)
     pause_enter();
 }
 
+static void find_customer(void)
+{
+    char b[48];
+    int i, n = 0;
+
+    header("Find Customer");
+    read_line("  Name contains : ", b, sizeof b);
+    printf("\n");
+    for (i = 0; i < ncust; i++) {
+        if (strstr(cust[i].name, b)) {
+            print_cust_row(&cust[i]);
+            n++;
+        }
+    }
+    printf("\n  %d match(es)\n", n);
+    pause_enter();
+}
+
 static void customer_menu(void)
 {
     int opt;
@@ -300,11 +318,13 @@ static void customer_menu(void)
         header("Customers");
         printf("  1. List customers\n");
         printf("  2. Add customer\n");
+        printf("  3. Find customer\n");
         printf("  0. Back\n\n");
         opt = read_int("  Option: ");
         switch (opt) {
         case 1: list_customers(); break;
         case 2: add_customer(); break;
+        case 3: find_customer(); break;
         case 0: return;
         default:
             printf("  Invalid option\n");
