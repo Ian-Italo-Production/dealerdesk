@@ -269,7 +269,7 @@ static void add_customer(void)
 
     header("Add Customer");
     if (ncust >= MAX_CUST) {
-        printf("  Custmer file is full!\n");
+        printf("  Customer file is full!\n");
         pause_enter();
         return;
     }
