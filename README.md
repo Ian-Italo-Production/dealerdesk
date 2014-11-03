@@ -1,4 +1,4 @@
-DEALERDESK v2.0
+DEALERDESK v2.1
 ===============
 
 Dealer management for the showroom: stock, customers, quotes and invoices.
