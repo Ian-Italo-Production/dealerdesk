@@ -226,6 +226,7 @@ static void reserve_vehicle(void)
         printf("\n  Vehicle is already sold.\n");
     } else {
         v->status = (v->status == ST_STOCK) ? ST_RESERVED : ST_STOCK;
+        save_stock();
         printf("\n  Vehicle %d is now %s.\n", v->id, status_txt(v->status));
     }
     pause_enter();
