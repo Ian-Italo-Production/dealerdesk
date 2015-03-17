@@ -214,6 +214,23 @@ static void change_price(void)
     pause_enter();
 }
 
+static void reserve_vehicle(void)
+{
+    VEHICLE *v;
+
+    header("Reserve / Release");
+    v = find_veh(read_int("  Vehicle ID : "));
+    if (!v) {
+        printf("\n  Vehicle not found.\n");
+    } else if (v->status == ST_SOLD) {
+        printf("\n  Vehicle is already sold.\n");
+    } else {
+        v->status = (v->status == ST_STOCK) ? ST_RESERVED : ST_STOCK;
+        printf("\n  Vehicle %d is now %s.\n", v->id, status_txt(v->status));
+    }
+    pause_enter();
+}
+
 static void stock_menu(void)
 {
     int opt;
@@ -225,6 +242,7 @@ static void stock_menu(void)
         printf("  3. Add vehicle\n");
         printf("  4. Find by plate\n");
         printf("  5. Change price\n");
+        printf("  6. Reserve / release vehicle\n");
         printf("  0. Back\n\n");
         opt = read_int("  Option: ");
         switch (opt) {
@@ -233,6 +251,7 @@ static void stock_menu(void)
         case 3: add_vehicle(); break;
         case 4: find_plate(); break;
         case 5: change_price(); break;
+        case 6: reserve_vehicle(); break;
         case 0: return;
         default:
             printf("  Invalid option\n");
