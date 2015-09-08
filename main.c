@@ -13,6 +13,7 @@
 #include "globals.h"
 #include "screen.h"
 #include "dbfile.h"
+#include "calc.h"
 #include "report.h"
 
 VEHICLE  veh[MAX_VEH];
@@ -25,57 +26,6 @@ int      ninv = 0;
 int next_veh_id  = 1000;
 int next_cust_id = 2000;
 int next_inv_no  = 50000;
-
-/* ---------------------------------------------------------- PRICING */
-
-typedef struct {
-    double list;
-    double trade_disc;
-    double disc_pct;
-    double disc;
-    double net;
-    double delivery;
-    double vat;
-    double reg_fee;
-    double tradein;
-    double total;
-} QUOTE;
-
-/*
- * Price build-up:
- *     list price
- *   - trade discount       (trade customers get 5%)
- *   - salesman discount    (max 10% without manager PIN)
- *   = net price
- *   + delivery
- *   + VAT 20% on list price
- *   + registration fee
- *   - trade-in
- *   = total
- */
-static void calc_quote(QUOTE *q, double list, char cust_type, double disc_pct, double tradein)
-{
-    q->list = list;
-    q->vat = list * 0.20;
-
-    q->trade_disc = 0;
-    if (cust_type == 'T')
-        q->trade_disc = (list + q->vat) * 0.05;
-
-    if (disc_pct < 0)
-        disc_pct = 0;
-    if (disc_pct > 15)
-        disc_pct = 15;
-    q->disc_pct = disc_pct;
-    q->disc = (list + q->vat - q->trade_disc) * disc_pct / 100.0;
-
-    q->net = list - q->trade_disc - q->disc;
-    q->delivery = 150.00;
-    q->reg_fee = 55.00;
-    q->tradein = tradein;
-
-    q->total = q->net + q->delivery + q->vat + q->reg_fee - q->tradein;
-}
 
 static const char *status_txt(int s)
 {
