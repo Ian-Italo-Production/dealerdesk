@@ -31,7 +31,7 @@ void calc_quote(QUOTE *q, double list, char cust_type, double disc_pct, double t
 
     q->net = list - q->trade_disc - q->disc;
     q->delivery = 150.00;
-    q->vat = q->net * 0.20;
+    q->vat = (q->net + q->delivery) * 0.20;
     q->reg_fee = 55.00;
     q->tradein = tradein;
 
