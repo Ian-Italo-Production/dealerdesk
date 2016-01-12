@@ -83,7 +83,6 @@ static void add_vehicle(void)
 {
     VEHICLE v;
     char b[32];
-    int i, j;
 
     header("Add Vehicle");
     if (nveh >= MAX_VEH) {
@@ -92,10 +91,7 @@ static void add_vehicle(void)
         return;
     }
     memset(&v, 0, sizeof v);
-    read_line("  Plate      : ", b, sizeof b);
-    for (i = 0, j = 0; b[i] && j < (int)sizeof v.plate - 1; i++)
-        if (b[i] != ' ')
-            v.plate[j++] = toupper((unsigned char)b[i]);
+    read_line("  Plate      : ", v.plate, sizeof v.plate);
     read_line("  Make       : ", v.make, sizeof v.make);
     read_line("  Model      : ", v.model, sizeof v.model);
     v.year = read_int("  Year       : ");
