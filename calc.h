@@ -14,6 +14,7 @@ typedef struct {
     double total;
 } QUOTE;
 
-void calc_quote(QUOTE *q, double list, char cust_type, double disc_pct, double tradein);
+double rnd2(double x);
+void   calc_quote(QUOTE *q, double list, char cust_type, double disc_pct, double tradein);
 
 #endif
