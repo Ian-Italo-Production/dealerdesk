@@ -26,7 +26,7 @@ void calc_quote(QUOTE *q, double list, char cust_type, double disc_pct, double t
 
     q->trade_disc = 0;
     if (cust_type == 'T')
-        q->trade_disc = rnd2(list * 0.05);
+        q->trade_disc = rnd2(list * 0.10);
 
     if (disc_pct < 0)
         disc_pct = 0;
