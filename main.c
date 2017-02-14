@@ -490,7 +490,6 @@ int main(void)
         printf("  3. Quote\n");
         printf("  4. Sell vehicle\n");
         printf("  5. Invoices\n");
-        printf("  6. Reports\n");
         printf("  9. Help\n");
         printf("  0. Exit\n\n");
         opt = read_int("  Option: ");
@@ -500,7 +499,6 @@ int main(void)
         case 3: quote_screen(); break;
         case 4: sell_vehicle(); break;
         case 5: invoice_menu(); break;
-        case 6: reports_menu(); break;
         case 9: help_screen(); break;
         case 0:
             printf("\n  Goodbye.\n");
