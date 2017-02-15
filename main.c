@@ -14,7 +14,6 @@
 #include "screen.h"
 #include "dbfile.h"
 #include "calc.h"
-#include "report.h"
 
 VEHICLE  veh[MAX_VEH];
 int      nveh = 0;
