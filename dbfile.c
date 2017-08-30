@@ -10,7 +10,7 @@
 #include "globals.h"
 #include "dbfile.h"
 
-#define DATA_DIR "C:\\DEALERDESK\\DATA\\"
+#define DATA_DIR "data/"
 
 static void cpy(char *d, const char *s, int n)
 {
