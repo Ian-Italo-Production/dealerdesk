@@ -441,6 +441,42 @@ static void list_invoices(void)
     pause_enter();
 }
 
+static void view_invoice(void)
+{
+    int no, i;
+    INVOICE *p = NULL;
+    VEHICLE *v;
+    CUSTOMER *c;
+
+    header("View Invoice");
+    no = read_int("  Invoice no : ");
+    for (i = 0; i < ninv; i++)
+        if (inv[i].no == no)
+            p = &inv[i];
+    if (!p) {
+        printf("\n  Invoice not found.\n");
+        pause_enter();
+        return;
+    }
+    v = find_veh(p->veh_id);
+    c = find_cust(p->cust_id);
+    printf("\n  INVOICE %d    Date: %s\n", p->no, p->date);
+    printf("  ----------------------------------------------\n");
+    printf("  Customer : %s\n", c ? c->name : "(unknown)");
+    printf("  Vehicle  : %s %s %s\n", v ? v->plate : "?", v ? v->make : "", v ? v->model : "");
+    printf("  ----------------------------------------------\n");
+    printf("  List price               %12.2f\n", p->list);
+    printf("  Discounts                %12.2f\n", -p->disc);
+    printf("  Net price                %12.2f\n", p->net);
+    printf("  Fees                     %12.2f\n", p->fees);
+    printf("  VAT                      %12.2f\n", p->vat);
+    if (p->tradein != 0)
+        printf("  Trade-in                 %12.2f\n", -p->tradein);
+    printf("  ==============================================\n");
+    printf("  TOTAL                    %12.2f\n", p->total);
+    pause_enter();
+}
+
 static void invoice_menu(void)
 {
     int opt;
@@ -448,10 +484,12 @@ static void invoice_menu(void)
     for (;;) {
         header("Invoices");
         printf("  1. List invoices\n");
+        printf("  2. View invoice\n");
         printf("  0. Back\n\n");
         opt = read_int("  Option: ");
         switch (opt) {
         case 1: list_invoices(); break;
+        case 2: view_invoice(); break;
         case 0: return;
         default:
             printf("  Invalid option\n");
