@@ -322,13 +322,6 @@ static int build_quote(QUOTE *q, VEHICLE **pv, CUSTOMER **pc)
         return 0;
     }
     pct = read_money("  Discount %  : ");
-    if (pct > 10) {
-        read_line("  Manager PIN : ", pin, sizeof pin);
-        if (getenv("DD_PIN") == NULL || strcmp(pin, getenv("DD_PIN")) != 0) {
-            printf("  Wrong PIN, discount limited to 10%%\n");
-            pct = 10;
-        }
-    }
     ti = read_money("  Trade-in    : ");
 
     calc_quote(q, v->price, c->type, pct, ti);
