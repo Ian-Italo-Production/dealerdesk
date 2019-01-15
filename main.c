@@ -305,7 +305,6 @@ static int build_quote(QUOTE *q, VEHICLE **pv, CUSTOMER **pc)
     VEHICLE *v;
     CUSTOMER *c;
     double pct, ti;
-    char pin[16];
 
     v = find_veh(read_int("  Vehicle ID  : "));
     if (!v) {
