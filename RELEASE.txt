@@ -9,4 +9,4 @@ HOW TO RELEASE DEALERDESK
 5. Email the showrooms that a new version is out
 6. If something breaks, copy dealerdesk.old back
 
-Last release: 2.1 (2014-11-03)  - P.
+Last release: 2.3 (2021-04-08)  - P.
