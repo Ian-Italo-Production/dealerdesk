@@ -4,6 +4,23 @@ DEALERDESK v2.1
 Dealer management for the showroom: stock, customers, quotes and invoices.
 
 
+QUICK START (Linux, macOS, or WSL on Windows)
+---------------------------------------------
+
+You need a C compiler (gcc or clang). From the repository root:
+
+    gcc -o dealerdesk *.c -lm
+    ./dealerdesk
+
+* Always run it from the repository root. It reads and writes the files in ./data
+* Pick a menu option by typing its number and pressing ENTER. 0 goes back, and
+  0 on the main menu exits.
+* Every change (new vehicle, sale, ...) is saved to data/*.dat immediately.
+  To put the sample data back:
+
+      git checkout -- data
+
+
 BUILD
 -----
 
