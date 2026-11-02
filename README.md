@@ -1,3 +1,5 @@
+This standard disclaimer states that the work is entirely fictional and any resemblance to real people, places, or events is coincidental.
+
 DEALERDESK v2.1
 ===============
 
