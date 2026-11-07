@@ -444,6 +444,7 @@ static void sell_vehicle(void)
     i->fees = q.delivery + q.reg_fee;
     i->tradein = q.tradein;
     i->total = q.total;
+    i->fleet_disc = q.fleet_disc;
     ninv++;
 
     v->status = ST_SOLD;
@@ -499,7 +500,12 @@ static void view_invoice(void)
     printf("  Vehicle  : %s %s %s\n", v ? v->plate : "?", v ? v->make : "", v ? v->model : "");
     printf("  ----------------------------------------------\n");
     printf("  List price               %12.2f\n", p->list);
-    printf("  Discounts                %12.2f\n", -p->disc);
+    if (p->fleet_disc != 0) {
+        printf("  Fleet discount           %12.2f\n", -p->fleet_disc);
+        printf("  Discounts                %12.2f\n", -(p->disc - p->fleet_disc));
+    } else {
+        printf("  Discounts                %12.2f\n", -p->disc);
+    }
     printf("  Net price                %12.2f\n", p->net);
     printf("  Fees                     %12.2f\n", p->fees);
     printf("  VAT                      %12.2f\n", p->vat);
