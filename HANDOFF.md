@@ -3,8 +3,7 @@
 Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, or done, verified.
 
 ## Now
-- (nothing in progress) 2026-11-07: step 3 (TICKET-142) done and verified locally; CI on the user's
-  push of master is read by the orchestrator before step 3 counts as CI-verified. Step 4 is next.
+- (nothing in progress) 2026-11-07: step 3 (TICKET-142) done and verified, CI green. Step 4 is next.
 
 ## Next
 - [todo] 2026-11-07 orchestrator: Step 4, final `NOTES.md` (max 2 pages). It must
@@ -16,7 +15,12 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
 ## Blocked
 
 ## Done (verified)
-- [done, verified locally] 2026-11-07 orchestrator: Step 3, TICKET-142 fleet discount. Commits:
+- [done, verified] 2026-11-07 orchestrator: Step 3, TICKET-142 fleet discount.
+  - CI green on the user's push of 5075e11: https://github.com/Ian-Italo-Production/dealerdesk/actions/runs/42406032232
+    Both jobs (ubuntu-24.04 gcc 13.3.0 /bin/sh dash; windows-latest mingw32-make): `test_calc: 97 checks,
+    0 failed`, 20 golden PASS (fleet_type/quote/sell on LF and CRLF), 0 FAIL, no compiler `warning:`
+    (the only `warning:` text is the workflow's own grep lines). Read from the job logs.
+  - Commits:
   1733746 (goldens stock, help, two-run reload; golden.sh runs `<name>.in2` after a restart),
   1165af6 (FINDINGS rows 7-8, strtok loss made permanent by a save), ba6e921 (C1 calc_quote 4% for F,
   salesman % after it, fees not discounted; test_calc 97 checks), e73936a (C2 Customers option 4,
