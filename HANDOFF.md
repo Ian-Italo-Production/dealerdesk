@@ -3,18 +3,27 @@
 Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, or done, verified.
 
 ## Now
-- (nothing in progress) 2026-11-07: step 3 (TICKET-142) done and verified, CI green. Step 4 is next.
+- (nothing in progress) 2026-11-07: steps 1-4 done. Left for the user: send the repo.
+  - [todo] 2026-11-07 user: `git push mine master` (a9090c1 to this commit); then the orchestrator reads
+    that CI run, which must be green on both jobs. It is the newest run in `gh run list`.
+  - [todo] 2026-11-07 user: send the repo. A link or `git clone` carries only commits; a zip of this
+    folder would also include the untracked `plan.md` (never committed) and the ignored binaries.
+  - [done] 2026-11-07: the leftover temp dirs in the Log no longer exist (checked with ls).
 
 ## Next
-- [todo] 2026-11-07 orchestrator: Step 4, final `NOTES.md` (max 2 pages). It must
-  include a time an agent got something wrong and how it was caught; see the Log.
-  - Fill "What I changed and why", "How I worked with the agents", "What I'd do next" from the
-    step 1-3 entries below; the TICKET-142 decisions (incl. "Screen and file details") stay as they are.
-  - `plan.md` (untracked) is the step 3 plan; it is never committed.
+- (nothing) 2026-11-07.
 
 ## Blocked
 
 ## Done (verified)
+- [done, verified] 2026-11-07 orchestrator: Step 4, final `NOTES.md` in 7f6da1e (997 words by `wc -w`).
+  - Filled "What I changed and why", "How I worked with the agents", "What I'd do next"; the
+    TICKET-142 section incl. "Screen and file details" is byte-identical to a2d0ec5 (diff of that range).
+  - Re-checked before writing: `mingw32-make build lint test` exit 0, 97 checks 0 failed, 20 golden
+    PASS, zero `warning:`; runs 42398786961 (dispatch on be2b31d, both jobs red in Test) and
+    42406032232 (push of 5075e11, both green, 97 checks and 20 PASS per job in the log).
+  - Fresh reviewer: APPROVE. It re-checked all 15 hashes, both ranges, the three Log citations,
+    the counts (own `mingw32-make test`) and both runs. Its two overclaim notes were applied before commit.
 - [done, verified] 2026-11-07 orchestrator: Step 3, TICKET-142 fleet discount.
   - CI green on the user's push of 5075e11: https://github.com/Ian-Italo-Production/dealerdesk/actions/runs/42406032232
     Both jobs (ubuntu-24.04 gcc 13.3.0 /bin/sh dash; windows-latest mingw32-make): `test_calc: 97 checks,
@@ -116,6 +125,7 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
   invoice, `|%.2f` on every invoices.dat line, nearest-penny rounding). Recorded in NOTES.md (d63dea0).
 
 ## Log (newest first, one line each)
+- 2026-11-07 orchestrator: got it wrong. NOTES draft said CI runs "on every push" (ci.yml: master pushes and dispatch only) and "Every TICKET-142 commit had a fresh reviewer's APPROVE" (HANDOFF records none for caa6169). Caught by the step 4 reviewer; narrowed to "every push to master" and "ba6e921-834bf11" in 7f6da1e.
 - 2026-11-07 orchestrator: got it wrong. Left the globals.h `type` comment saying only R and T after C2 made F valid; the builder flagged it twice and I kept deferring it as outside the commit under review. Caught by the user asking why; fixed in caa6169.
 - 2026-11-07 orchestrator (step 2 handoff): got it wrong. HANDOFF predicted the `quote` golden would change; it can't, because `data/*.dat` is never committed and the sample Greenway stays R. Caught by the step 3 planner; quote.out stayed byte-identical and was a stop condition throughout.
 - 2026-11-07 orchestrator: got it wrong. Committed C1 (ba6e921) and C2 (e73936a) while the user's TICKET-142 screen decisions were still uncommitted in NOTES.md (its review had BLOCKed twice on wording), so e73936a says "as NOTES decides" before HEAD's NOTES held it. Caught by the C3 reviewer; NOTES committed as d63dea0 before C3. The code matched the user's answers throughout.
