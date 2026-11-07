@@ -31,10 +31,17 @@ Read first: `HANDOFF.md`, the current ticket, `NOTES.md` (ticket decisions), `FI
 - If the docs and the code disagree, or you find a bug, don't fix it. Add a
   row to `FINDINGS.md` with a repro.
 - Characterize first: a test pins today's behaviour before any change.
+- Stop only for the decisions under "Ask first". Do everything else yourself
+  (plan, characterize, build, review, commit, CI config, `HANDOFF.md`) and
+  report what you did.
 - Work on master in small commits, one concern each. Stage files by name.
-  Show the user `git diff --staged` and commit only when they say OK.
-- Anything bigger than ~30 lines: the planner writes `plan.md`, and the user
-  approves it before work starts.
+  Commit without asking once build, lint and test pass and a fresh reviewer
+  says APPROVE. Show the user the commit list afterwards.
+- Never push. When commits are ready, tell the user the exact push command
+  (`git push mine master`), then read the CI run. Read-only `gh run
+  list/view/watch`, `git fetch` and `git ls-remote` need no asking.
+- Anything bigger than ~30 lines: the planner writes `plan.md`. It needs the
+  user's approval only when it has open questions; otherwise work starts.
 - Match the existing style: C89, declarations at the top of each block,
   4-space indent, static helpers. No refactors, renames or file splits.
 - Everything must run on Ubuntu and Windows (CI runs both): POSIX sh and make,
@@ -52,12 +59,15 @@ Read first: `HANDOFF.md`, the current ticket, `NOTES.md` (ticket decisions), `FI
 - Edit ticket files (`TICKET-*.md`) or `BRIEF.md`.
 - Read or print secrets. Send, publish, release (`RELEASE.txt`) or pay.
 
-## Ask first
+## Ask first (the only stops)
+- Anything the ticket and its `NOTES.md` decisions don't settle: a new or
+  changed screen line, prompt, menu number, `.dat` format or rounding rule.
+- A test or golden that changes in a way no `NOTES.md` decision explains, or
+  any test failing on unchanged code.
 - Any new dependency or tool. The plan is none: a plain C test file, POSIX sh and make.
-- CI config (`.github/`) and agent config (`.claude/`, this file).
-- Any change to a `.dat` format, screen text, prompt or menu number that the
-  ticket and `NOTES.md` don't already cover.
-- Editing `README.md` or the Help screen.
+- Editing `README.md` or the Help screen. (Tickets and `BRIEF.md` stay hard walls.)
+- Agent config (`.claude/`, this file).
+- Anything irreversible or outward-facing.
 
 ## Memory
 - Start: read `HANDOFF.md`. Treat every item as a hint until you re-check it against git.

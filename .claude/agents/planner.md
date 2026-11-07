@@ -19,4 +19,5 @@ You plan. You never change code, tests or data.
      hasn't decided yet
 3. Every behaviour change must trace to the ticket and its decisions in
    `NOTES.md`. List anything else under "Not doing".
-4. Return the plan and stop. The user approves it, not you.
+4. Return the plan and stop. You never approve it: the user does when it has
+   open questions; otherwise the orchestrator goes ahead.

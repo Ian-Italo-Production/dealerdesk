@@ -13,11 +13,16 @@
       "Bash(git show*)",
       "Bash(git archive *)",
       "Bash(git add *)",
-      "Bash(git checkout -- data)"
+      "Bash(git checkout -- data)",
+      "Bash(git commit *)",
+      "Bash(git fetch*)",
+      "Bash(git ls-remote*)",
+      "Bash(gh run list*)",
+      "Bash(gh run view*)",
+      "Bash(gh run watch*)",
+      "Edit(.github/**)"
     ],
     "ask": [
-      "Bash(git commit *)",
-      "Edit(.github/**)",
       "Edit(.claude/**)",
       "Edit(AGENTS.md)"
     ],
@@ -30,6 +35,9 @@
       "Bash(git checkout -b*)",
       "Bash(git commit -a*)",
       "Bash(git commit --amend*)",
+      "Bash(git commit *--amend*)",
+      "Bash(git commit * -a*)",
+      "Bash(git commit *--all*)",
       "Bash(git add -A*)",
       "Bash(git add --all*)",
       "Bash(git add .)",

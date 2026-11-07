@@ -11,7 +11,7 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
     (needed for the new invoice field, and the restart half of the FINDINGS strtok bug).
   - `golden.sh` strips `\r` from `.dat` dumps everywhere, so on Linux a `\r` written into a
     saved file is only caught if it also reaches the screen. Mind this if the new field is text.
-  - The `customers` and `quote` goldens will change on purpose; each changed golden needs the user's OK.
+  - The `customers` and `quote` goldens will change on purpose; each changed golden must trace to a `NOTES.md` decision; one that doesn't is a stop.
   - CI now runs on every push to master (Ubuntu 24.04 and Windows); after each user push, read the run.
 - [todo] 2026-11-07 orchestrator: Step 4, final `NOTES.md` (max 2 pages). It must
   include a time an agent got something wrong and how it was caught; see the Log.
@@ -71,6 +71,16 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
   the red proof (own commit); pin actions/checkout to the v7.0.1 SHA; Ubuntu runner pinned to
   `ubuntu-24.04` (not ubuntu-latest); plant the 1p bug in main.c:351, not calc.c; the
   orchestrator may start the proof run with `gh workflow run` on master after the user pushes.
+- 2026-11-07 user: looser agent rules (replaces "every commit is shown first"). Stop only for:
+  anything the ticket and `NOTES.md` don't settle (screen line, prompt, menu number, `.dat`
+  format, rounding rule); a test or golden change no `NOTES.md` decision explains, or a test
+  failing on unchanged code; a new dependency or tool; editing README.md or the Help screen;
+  agent config; anything irreversible or outward-facing. Everything else without asking:
+  plan.md needs approval only with open questions; characterize, build, review; commit small
+  one-concern commits once build, lint and test pass and a fresh reviewer says APPROVE, then
+  show the commit list; edit CI config; update HANDOFF; read-only `gh run list/view/watch`,
+  `git fetch`, `git ls-remote`. Hard walls unchanged: agents never push; the user pushes
+  master to `mine` when told the exact command, then the orchestrator reads the CI run.
 
 ## Log (newest first, one line each)
 - 2026-11-07 builder: got it wrong in its report. Its "new file" listing for commit 2 showed the Test grep as `grep 'warning:` test.log` (backtick for quote), which would break the step. Caught by the orchestrator grepping the real ci.yml (line 52 correct, diff deletions only); the file was fine, only the report was wrong.

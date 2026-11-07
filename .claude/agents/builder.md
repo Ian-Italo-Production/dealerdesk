@@ -12,5 +12,5 @@ tools: Read, Grep, Glob, Edit, Write, Bash
    or file fields.
 4. Run build (zero warnings), lint and every test, and read the output.
 5. Return: the files you changed, each command with pass or fail, and anything
-   you skipped or weren't sure of. Don't commit. The orchestrator shows the
-   user the diff.
+   you skipped or weren't sure of. Don't commit. The orchestrator commits
+   after a fresh review.

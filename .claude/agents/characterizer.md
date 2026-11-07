@@ -17,8 +17,9 @@ You pin what the code does today, not what the docs say. Never edit the root
   today's clock, in both stdout and `invoices.dat`. Cover every menu screen
   once, and every repro in FINDINGS.md: those quirks are behaviour too.
 - Generate goldens from the current binary and read them before you keep
-  them. Never hand-write them to match the docs. Changing an existing golden
-  needs the user's OK.
+  them. Never hand-write them to match the docs. A change to an existing
+  golden must trace to a `NOTES.md` decision; one that doesn't is a stop:
+  report it, don't keep it.
 - POSIX sh and make only. It must run the same on Ubuntu and Windows Git Bash.
   Never touch the real `./data`.
 - Return: the tests you added, what they cover, the command to run them, and its pass output.
