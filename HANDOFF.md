@@ -3,22 +3,44 @@
 Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, or done, verified.
 
 ## Now
-- (nothing in progress) 2026-11-07: step 3 (TICKET-142) is next.
+- (nothing in progress) 2026-11-07: step 3 (TICKET-142) done and verified locally; CI on the user's
+  push of master is read by the orchestrator before step 3 counts as CI-verified. Step 4 is next.
 
 ## Next
-- [todo] 2026-11-07 orchestrator: Step 3, TICKET-142 test-first, as decided in `NOTES.md`.
-  - First add the goldens deferred from step 1: Stock, Help, and a two-run reload golden
-    (needed for the new invoice field, and the restart half of the FINDINGS strtok bug).
-  - `golden.sh` strips `\r` from `.dat` dumps everywhere, so on Linux a `\r` written into a
-    saved file is only caught if it also reaches the screen. Mind this if the new field is text.
-  - The `customers` and `quote` goldens will change on purpose; each changed golden must trace to a `NOTES.md` decision; one that doesn't is a stop.
-  - CI now runs on every push to master (Ubuntu 24.04 and Windows); after each user push, read the run.
 - [todo] 2026-11-07 orchestrator: Step 4, final `NOTES.md` (max 2 pages). It must
   include a time an agent got something wrong and how it was caught; see the Log.
+  - Fill "What I changed and why", "How I worked with the agents", "What I'd do next" from the
+    step 1-3 entries below; the TICKET-142 decisions (incl. "Screen and file details") stay as they are.
+  - `plan.md` (untracked) is the step 3 plan; it is never committed.
 
 ## Blocked
 
 ## Done (verified)
+- [done, verified locally] 2026-11-07 orchestrator: Step 3, TICKET-142 fleet discount. Commits:
+  1733746 (goldens stock, help, two-run reload; golden.sh runs `<name>.in2` after a restart),
+  1165af6 (FINDINGS rows 7-8, strtok loss made permanent by a save), ba6e921 (C1 calc_quote 4% for F,
+  salesman % after it, fees not discounted; test_calc 97 checks), e73936a (C2 Customers option 4,
+  Fleet label; golden fleet_type), d63dea0 (NOTES: the user's screen and file answers), 3dd09e9 (C3 Add
+  customer Fleet question), ec2e796 (C4 Fleet discount line on quote and preview; golden fleet_quote),
+  834bf11 (C5 12th invoices.dat field, View invoice Fleet line; two-run golden fleet_sell), plus the
+  FINDINGS line-reference and HANDOFF commits after it.
+  - Each test was seen red on the commit before it, then committed with its code. Every commit had a
+    fresh reviewer's APPROVE and a local build, lint and test with zero warnings.
+  - Fresh clone of 834bf11 (core.autocrlf=true, CRLF data): `mingw32-make build lint test` exit 0,
+    97 checks 0 failed, 20 golden PASS under sh and dash, zero `warning:`.
+  - Golden trace from 1733746 to 834bf11: quote, invoices, stock and help .out unchanged; customers,
+    reload and sell change only by the `4. Change customer type` menu line and `|0.00` on invoices.dat
+    lines (NOTES decisions). Non-fleet R/T calc results bit-identical (reviewers: 317M comparisons).
+  - Acceptance: fleet quote shows "Fleet discount" and the right total (fleet_quote: 13747.96,
+    10001.30, 18661.24); non-fleet quotes and invoices unchanged; old 11-field invoices.dat loads with
+    no conversion and displays as before (invoices.out unchanged).
+  - Rollback, by the orchestrator on a scratch copy: a72ed67's binary on data written by 834bf11's
+    code lists Greenway (F) as Retail, quotes it with no fleet discount (1003: 19429.00), views 50233
+    with Discounts -1489.20 / Net 11260.80 / TOTAL 13747.96 and the other invoices with their totals.
+    When it re-saves, it drops only the 12th field and keeps 2008 as `F`; the new binary then reads
+    those lines as fleet 0 (no Fleet line, -1489.20, 13747.96).
+  - Not covered by a golden: a fleet sale at 0% (`Discounts -0.00`, checked by hand by builder and
+    reviewer) and a save after a restart (FINDINGS strtok permanence).
 - [done, verified] 2026-11-07 orchestrator: Step 2, CI. Commits be2b31d (`.github/workflows/ci.yml`:
   push to master + workflow_dispatch; matrix ubuntu-24.04/`make` and windows-latest/`mingw32-make`,
   `shell: bash`, fail-fast off; checkout pinned to v7.0.1 SHA; Tools, Build, Lint, Test; Build and
@@ -82,7 +104,14 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
   `git fetch`, `git ls-remote`. Hard walls unchanged: agents never push; the user pushes
   master to `mine` when told the exact command, then the orchestrator reads the CI run.
 
+- 2026-11-07 user: step 3 plan.md answers: the Recommended option for every open question (change
+  type option 4 R/T/F, "Fleet discount" line, Fleet question after Trade=N, separate line on View
+  invoice, `|%.2f` on every invoices.dat line, nearest-penny rounding). Recorded in NOTES.md (d63dea0).
+
 ## Log (newest first, one line each)
+- 2026-11-07 orchestrator (step 2 handoff): got it wrong. HANDOFF predicted the `quote` golden would change; it can't, because `data/*.dat` is never committed and the sample Greenway stays R. Caught by the step 3 planner; quote.out stayed byte-identical and was a stop condition throughout.
+- 2026-11-07 orchestrator: got it wrong. Committed C1 (ba6e921) and C2 (e73936a) while the user's TICKET-142 screen decisions were still uncommitted in NOTES.md (its review had BLOCKed twice on wording), so e73936a says "as NOTES decides" before HEAD's NOTES held it. Caught by the C3 reviewer; NOTES committed as d63dea0 before C3. The code matched the user's answers throughout.
+- 2026-11-07 orchestrator: got it wrong. My first NOTES wording ("next line, no blank line before it") described a terminal, not the piped goldens, and left the sign of the Fleet amount and the label scope open. Caught by two NOTES reviewers (fleet_type.out:44 contradicted it); fixed to their exact wording before any golden depended on it.
 - 2026-11-07 builder: got it wrong in its report. Its "new file" listing for commit 2 showed the Test grep as `grep 'warning:` test.log` (backtick for quote), which would break the step. Caught by the orchestrator grepping the real ci.yml (line 52 correct, diff deletions only); the file was fine, only the report was wrong.
 - 2026-11-07 orchestrator: got it wrong. Planned and committed the workflow without checking the gh token could push it; the user's `git push mine master` of be2b31d was rejected (`refusing to allow an OAuth App to create or update workflow ... without workflow scope`; token scopes were gist, read:org, repo). Caught by `git ls-remote mine` still showing f90dbab and no runs, then reading the user's terminal. Fix is the user's: `gh auth refresh -s workflow`, then push again.
 - 2026-11-07 github-setup: got it wrong. Piped `gh auth login --web` through `grep` to hide token lines; grep buffered into the output file, so the one-time device code never showed. Caught by reading the empty output; stopped it and restarted with `grep --line-buffered`. Also added winget's `--accept-source-agreements --accept-package-agreements` beyond the command given; told the user after.
