@@ -9,3 +9,4 @@ lint:
 test: build
 	gcc -Wall -Wextra -I. -o tests/test_calc tests/test_calc.c calc.c -lm
 	./tests/test_calc
+	sh tests/golden.sh
