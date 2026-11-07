@@ -45,6 +45,9 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
     those lines as fleet 0 (no Fleet line, -1489.20, 13747.96).
   - Not covered by a golden: a fleet sale at 0% (`Discounts -0.00`, checked by hand by builder and
     reviewer) and a save after a restart (FINDINGS strtok permanence).
+  - [done, verified] 2026-11-07: caa6169, globals.h CUSTOMER type comment now lists `F = fleet`
+    (user approved). Comment only: reviewer found `gcc -E` output and objects byte-identical; local
+    build, lint, test: 97 checks, 20 PASS, zero warnings. Not pushed yet; goes with the step 4 push.
 - [done, verified] 2026-11-07 orchestrator: Step 2, CI. Commits be2b31d (`.github/workflows/ci.yml`:
   push to master + workflow_dispatch; matrix ubuntu-24.04/`make` and windows-latest/`mingw32-make`,
   `shell: bash`, fail-fast off; checkout pinned to v7.0.1 SHA; Tools, Build, Lint, Test; Build and
@@ -113,6 +116,7 @@ Format: - [status] YYYY-MM-DD who: what. Status is todo, in progress, blocked, o
   invoice, `|%.2f` on every invoices.dat line, nearest-penny rounding). Recorded in NOTES.md (d63dea0).
 
 ## Log (newest first, one line each)
+- 2026-11-07 orchestrator: got it wrong. Left the globals.h `type` comment saying only R and T after C2 made F valid; the builder flagged it twice and I kept deferring it as outside the commit under review. Caught by the user asking why; fixed in caa6169.
 - 2026-11-07 orchestrator (step 2 handoff): got it wrong. HANDOFF predicted the `quote` golden would change; it can't, because `data/*.dat` is never committed and the sample Greenway stays R. Caught by the step 3 planner; quote.out stayed byte-identical and was a stop condition throughout.
 - 2026-11-07 orchestrator: got it wrong. Committed C1 (ba6e921) and C2 (e73936a) while the user's TICKET-142 screen decisions were still uncommitted in NOTES.md (its review had BLOCKed twice on wording), so e73936a says "as NOTES decides" before HEAD's NOTES held it. Caught by the C3 reviewer; NOTES committed as d63dea0 before C3. The code matched the user's answers throughout.
 - 2026-11-07 orchestrator: got it wrong. My first NOTES wording ("next line, no blank line before it") described a terminal, not the piped goldens, and left the sign of the Fleet amount and the label scope open. Caught by two NOTES reviewers (fleet_type.out:44 contradicted it); fixed to their exact wording before any golden depended on it.
