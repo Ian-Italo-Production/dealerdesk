@@ -4,11 +4,6 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
-    inputs:
-      plant_regression:
-        description: "Proof only: plants a 1p TOTAL bug in main.c on the runner; this run must go red"
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -40,12 +35,6 @@ jobs:
           ${{ matrix.make }} --version
           git config --show-origin --get core.autocrlf || true
           git ls-files --eol data Makefile tests/golden.sh
-
-      - name: Plant regression
-        if: inputs.plant_regression
-        run: |
-          sed -i 's/q->total);/q->total + 0.01);/' main.c
-          grep -n 'q->total + 0.01' main.c
 
       - name: Build
         run: |
