@@ -16,7 +16,7 @@ Read first: `HANDOFF.md`, the current ticket, `NOTES.md` (ticket decisions), `FI
 ## Commands (Git Bash locally, bash in CI; run from the repo root)
 - Build: `gcc -Wall -Wextra -o dealerdesk *.c -lm` (must stay at zero warnings)
 - Lint: `gcc -Wall -Wextra -Werror -fsyntax-only *.c` (a hook runs it after every edit)
-- Test: there is none yet; step 1 adds it. Until then, run build, lint and a scripted run.
+- Test: `make test` (`mingw32-make test` in Git Bash on Windows): `calc_quote` unit tests, then golden runs on LF and CRLF temp copies of `data/`. `UPDATE=1 sh tests/golden.sh` rewrites the goldens; read every changed one before keeping it.
 - Scripted run on a copy of the data, never on `./data`:
   `r=$PWD d=$(mktemp -d) && cp -r data "$d" && printf '3\n1002\n2002\n0\n0\n\n0\n' | (cd "$d" && "$r/dealerdesk")`
   When input ends, the app exits 0, so a script can stop anywhere.
