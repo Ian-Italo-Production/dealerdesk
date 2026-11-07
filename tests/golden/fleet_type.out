@@ -101,6 +101,69 @@
   0. Back
 
   Option: [2J[H==============================================================
+  DEALERDESK v2.3                                 Add Customer
+==============================================================
+
+  Name   :   Phone  :   Email  :   Trade customer (Y/N)?   Fleet customer (Y/N)? 
+  Customer 2009 added.
+
+  Press ENTER to continue...[2J[H==============================================================
+  DEALERDESK v2.3                                    Customers
+==============================================================
+
+  1. List customers
+  2. Add customer
+  3. Find customer
+  4. Change customer type
+  0. Back
+
+  Option: [2J[H==============================================================
+  DEALERDESK v2.3                                 Add Customer
+==============================================================
+
+  Name   :   Phone  :   Email  :   Trade customer (Y/N)?   Fleet customer (Y/N)? 
+  Customer 2010 added.
+
+  Press ENTER to continue...[2J[H==============================================================
+  DEALERDESK v2.3                                    Customers
+==============================================================
+
+  1. List customers
+  2. Add customer
+  3. Find customer
+  4. Change customer type
+  0. Back
+
+  Option: [2J[H==============================================================
+  DEALERDESK v2.3                                    Customers
+==============================================================
+
+  ID    NAME                       PHONE          EMAIL                        TYPE
+  -----------------------------------------------------------------------------------
+  2001  Sarah Whitfield            07700 900412   s.whitfield@example.com      Retail
+  2002  Marlow Motors Ltd          01632 960118   buying@marlowmotors.example  Trade
+  2003  David Okafor               07700 900877   dokafor@example.net          Retail
+  2004  Hannah Price               07700 900233   hannah.price@example.org     Retail
+  2005  A1 Car Sales               01632 960455   trade@a1cars.example         Trade
+  2006  Tom Brennan                07700 900650   tbrennan@example.com         Retail
+  2007  Priya Nair                 07700 900931   priya.nair@example.net       Retail
+  2008  Greenway Taxis             01632 960702   fleet@greenwaytaxis.example  Fleet
+  2009  Swift Couriers             01632 960999   ops@swiftcouriers.example    Fleet
+  2010  Jo Bloggs                  07700 900111   jo@example.com               Retail
+
+  10 customer(s)
+
+  Press ENTER to continue...[2J[H==============================================================
+  DEALERDESK v2.3                                    Customers
+==============================================================
+
+  1. List customers
+  2. Add customer
+  3. Find customer
+  4. Change customer type
+  0. Back
+
+  Option: [2J[H==============================================================
   DEALERDESK v2.3                                    Main Menu
 ==============================================================
 
@@ -123,13 +186,15 @@
 2006|Tom Brennan|07700 900650|tbrennan@example.com|R
 2007|Priya Nair|07700 900931|priya.nair@example.net|R
 2008|Greenway Taxis|01632 960702|fleet@greenwaytaxis.example|F
+2009|Swift Couriers|01632 960999|ops@swiftcouriers.example|F
+2010|Jo Bloggs|07700 900111|jo@example.com|R
 == invoices.dat
 50230|2021-02-11|1009|2003|9295.00|464.75|8830.25|1796.05|205.00|1500.00|9331.30
 50231|2021-03-02|1012|2002|13495.00|1349.50|12145.50|2459.10|205.00|0.00|14809.60
 50232|2021-03-29|1001|2008|10495.00|839.60|9655.40|1961.08|205.00|0.00|11821.48
 == next_ids.dat
 vehicle=1013
-customer=2009
+customer=2011
 invoice=50233
 == stock.dat
 1001|LK19 XRT|Ford|Fiesta 1.0 EcoBoost Zetec|2019|38210|7900.00|10495.00|2
