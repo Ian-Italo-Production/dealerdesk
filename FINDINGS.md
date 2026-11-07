@@ -19,4 +19,13 @@ Reproduce from the repo root with `./dealerdesk`. `3 → 1002 → 2002` means ty
 
 Reproduce: `2 → 2`, enter Name `Test`, Phone `07700 900000`, press ENTER for Email, `Y` for Trade. `2 → 1` shows Trade. Exit, restart, `2 → 1`: now Retail, with `T` in the email column.
 
+The loss becomes permanent at the next save of `customers.dat`: after the restart, adding any customer (or, from TICKET-142, changing a type) writes the shifted record back as `2009|Test|07700 900000|T|R`. Reproduce: the steps above, then after the restart `2 → 2` and add any customer; `data/customers.dat` now ends the Test line with `|T|R`. The `reload` golden pins the first half; no golden saves after a restart. (Found 2026-11-07.)
+
+## Other bugs (found 2026-11-07, not fixed)
+
+| # | Code does | Reproduce |
+|---|---|---|
+| 7 | View invoice shows `Discounts -0.00` for an invoice with no discount (`main.c:461` prints `-p->disc` with `p->disc` 0). Under TICKET-142 a fleet sale at 0% salesman discount shows the same on its Discounts line. | `4 → 1002 → 2001 → 0 → 0 → Y`, then `5 → 2 → 50233`: `Discounts -0.00` |
+| 8 | A make longer than 12 characters overflows the MAKE column in the stock lists (`main.c:71`, `%-12s` with no precision), pushing the rest of that row one place right. | `1 → 2`: row 1012 `Mercedes-Benz` (13 characters) is out of line with the rows above it |
+
 Restore the sample data afterwards, with the app closed: `git checkout -- data`
