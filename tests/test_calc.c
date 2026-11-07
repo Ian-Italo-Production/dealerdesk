@@ -66,6 +66,7 @@ int main(void)
     calc_quote(&q, 10995.00, 'R', 25, 0.00);
     check("cap25", "list", q.list, "10995.00");
     check("cap25", "trade_disc", q.trade_disc, "0.00");
+    check("cap25", "fleet_disc", q.fleet_disc, "0.00");
     check("cap25", "disc_pct", q.disc_pct, "15.00");
     check("cap25", "disc", q.disc, "1649.25");
     check("cap25", "net", q.net, "9345.75");
@@ -92,6 +93,7 @@ int main(void)
     calc_quote(&q, 10995.00, 'T', 5, 0.00);
     check("trade5", "list", q.list, "10995.00");
     check("trade5", "trade_disc", q.trade_disc, "1099.50");
+    check("trade5", "fleet_disc", q.fleet_disc, "0.00");
     check("trade5", "disc_pct", q.disc_pct, "5.00");
     check("trade5", "disc", q.disc, "494.78");
     check("trade5", "net", q.net, "9400.72");
@@ -113,6 +115,51 @@ int main(void)
     check("half2.5", "reg_fee", q.reg_fee, "55.00");
     check("half2.5", "tradein", q.tradein, "0.00");
     check("half2.5", "total", q.total, "13099.14");
+
+    /* Fleet (TICKET-142): 4% off list, then the salesman % off what is left */
+
+    /* fleet 8%, plus the invoice disc as sell_vehicle() stores it */
+    calc_quote(&q, 12750.00, 'F', 8, 0.00);
+    check("fleet8", "list", q.list, "12750.00");
+    check("fleet8", "trade_disc", q.trade_disc, "0.00");
+    check("fleet8", "fleet_disc", q.fleet_disc, "510.00");
+    check("fleet8", "disc_pct", q.disc_pct, "8.00");
+    check("fleet8", "disc", q.disc, "979.20");
+    check("fleet8", "net", q.net, "11260.80");
+    check("fleet8", "delivery", q.delivery, "150.00");
+    check("fleet8", "vat", q.vat, "2282.16");
+    check("fleet8", "reg_fee", q.reg_fee, "55.00");
+    check("fleet8", "tradein", q.tradein, "0.00");
+    check("fleet8", "total", q.total, "13747.96");
+    check("fleet8", "inv disc", q.trade_disc + q.fleet_disc + q.disc, "1489.20");
+
+    /* fleet 25% is capped to 15%, trade-in 1000 */
+    calc_quote(&q, 10995.00, 'F', 25, 1000.00);
+    check("fleet25", "list", q.list, "10995.00");
+    check("fleet25", "trade_disc", q.trade_disc, "0.00");
+    check("fleet25", "fleet_disc", q.fleet_disc, "439.80");
+    check("fleet25", "disc_pct", q.disc_pct, "15.00");
+    check("fleet25", "disc", q.disc, "1583.28");
+    check("fleet25", "net", q.net, "8971.92");
+    check("fleet25", "delivery", q.delivery, "150.00");
+    check("fleet25", "vat", q.vat, "1824.38");
+    check("fleet25", "reg_fee", q.reg_fee, "55.00");
+    check("fleet25", "tradein", q.tradein, "1000.00");
+    check("fleet25", "total", q.total, "10001.30");
+
+    /* fleet 0%: 399.9996 rounds to 400.00 */
+    calc_quote(&q, 9999.99, 'F', 0, 0.00);
+    check("fleetrnd", "list", q.list, "9999.99");
+    check("fleetrnd", "trade_disc", q.trade_disc, "0.00");
+    check("fleetrnd", "fleet_disc", q.fleet_disc, "400.00");
+    check("fleetrnd", "disc_pct", q.disc_pct, "0.00");
+    check("fleetrnd", "disc", q.disc, "0.00");
+    check("fleetrnd", "net", q.net, "9599.99");
+    check("fleetrnd", "delivery", q.delivery, "150.00");
+    check("fleetrnd", "vat", q.vat, "1950.00");
+    check("fleetrnd", "reg_fee", q.reg_fee, "55.00");
+    check("fleetrnd", "tradein", q.tradein, "0.00");
+    check("fleetrnd", "total", q.total, "11754.99");
 
     printf("test_calc: %d checks, %d failed\n", nchecks, nfailed);
     return nfailed ? 1 : 0;
