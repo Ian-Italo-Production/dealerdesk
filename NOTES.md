@@ -2,11 +2,22 @@
 
 ## What I changed and why
 
-_To do._
+Nothing could change safely without tests, so: safety net, then CI on every push to master, then TICKET-142 through both.
+
+1. **Safety net** (6383123 to 31e13ca): `make build`, `lint`, `test`; `calc_quote` unit tests pinned to sample invoices 50230-50232; golden runs that type into the real binary on LF and CRLF copies of `data/` and compare screens and saved files.
+2. **CI** (be2b31d, 5f094c7): GitHub Actions on Ubuntu 24.04 and Windows; fails on a failing test or any compiler warning. Proven able to fail: a 1p TOTAL bug planted on the runner went red on both jobs ([run 42398786961](https://github.com/Ian-Italo-Production/dealerdesk/actions/runs/42398786961)).
+3. **TICKET-142** (ba6e921 to 834bf11): each test seen failing, then committed with its code. 97 unit checks and 20 golden runs, green on both runners for 5075e11 ([run 42406032232](https://github.com/Ian-Italo-Production/dealerdesk/actions/runs/42406032232)). The previous binary still runs on the new files (rollback check in `HANDOFF.md`).
 
 ## How I worked with the agents
 
-_To do._
+Claude Code, with the setup committed: `AGENTS.md` (rules, hard walls, when to ask), four subagents in `.claude/agents/` (planner, characterizer, builder, reviewer), an `/orchestrate` skill where the main session delegates, re-runs the checks and commits, and a lint hook after every edit. Every ba6e921-834bf11 commit had a fresh reviewer's APPROVE. `HANDOFF.md` carries state and logs agent mistakes. I answered the open questions and did every push; agents then read the CI run.
+
+**When agents got it wrong** (from the `HANDOFF.md` Log):
+- The characterizer's first `tests/golden.sh` stripped every `\r`, which would hide a CR leak on Ubuntu. That commit's reviewer caught it by reading `dbfile.c`; fixed before 0fd82f5.
+- The orchestrator committed ba6e921 and e73936a before committing my screen decisions. The next reviewer caught it; d63dea0 committed them before 3dd09e9.
+- The orchestrator kept deferring the builder's note that the `globals.h` type comment omits F. I caught it by asking why; fixed in caa6169.
+
+No agent summary counts as evidence: the orchestrator re-runs the checks and reads the output.
 
 ## Assumptions and decisions (TICKET-142)
 
@@ -31,4 +42,7 @@ _To do._
 
 ## What I'd do next
 
-See [FINDINGS.md](FINDINGS.md).
+- Business decisions on [FINDINGS.md](FINDINGS.md), first the `strtok` bug: a blank field shifts the fields after it on reload, and the next save makes that permanent, silently.
+- Goldens for what `HANDOFF.md` says none covers: a fleet sale at 0% (`Discounts -0.00`) and a save after a restart.
+- Fleet in the Help screen and README, once approved.
+- Replace the manual release in `RELEASE.txt` with a CI-built binary and a scripted rollback.
