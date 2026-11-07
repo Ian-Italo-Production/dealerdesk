@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      plant_regression:
+        description: "Proof only: plants a 1p TOTAL bug in main.c on the runner; this run must go red"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            make: make
+          - os: windows-latest
+            make: mingw32-make
+    runs-on: ${{ matrix.os }}
+    # A hung app would burn private-repo minutes, and Windows bills 2x.
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Tools
+        run: |
+          command -v gcc ${{ matrix.make }} sh
+          readlink -f /bin/sh
+          gcc --version
+          ${{ matrix.make }} --version
+          git config --show-origin --get core.autocrlf || true
+          git ls-files --eol data Makefile tests/golden.sh
+
+      - name: Plant regression
+        if: inputs.plant_regression
+        run: |
+          sed -i 's/q->total);/q->total + 0.01);/' main.c
+          grep -n 'q->total + 0.01' main.c
+
+      - name: Build
+        run: |
+          ${{ matrix.make }} build 2>&1 | tee build.log
+          # Not `! grep`: bash -e does not exit on a negated command.
+          if grep 'warning:' build.log; then exit 1; fi
+
+      - name: Lint
+        run: ${{ matrix.make }} lint
+
+      - name: Test
+        run: |
+          ${{ matrix.make }} test 2>&1 | tee test.log
+          # test_calc builds without -Werror, and -fsyntax-only misses some warnings.
+          if grep 'warning:' test.log; then exit 1; fi
